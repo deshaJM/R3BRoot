@@ -114,7 +114,7 @@ auto main(int argc, const char** argv) -> int
     auto filesource = std::make_unique<R3BFileSource2>();
     if (run_id->value() >= 0)
     {
-        filesource->SetRunId(run_id->value());
+        filesource->SetInitRunID(run_id->value());
         R3BLOG(info, fmt::format("Filesource2: Set to run id {}", run_id->value()));
     }
 
