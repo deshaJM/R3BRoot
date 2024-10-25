@@ -109,15 +109,15 @@ auto main(int argc, const char** argv) -> int
     FairLogger::GetLogger()->SetLogScreenLevel(logLevel->value().c_str());
 
     auto run = std::make_unique<FairRunAna>();
-    if (run_id->value() >= 0)
-    {
-        run->SetRunId(run_id->value());
-        R3BLOG(info, fmt::format("Set to run id {}", run_id->value()));
-    }
-
     auto fairroot_input_files = R3B::GetFilesFromRegex(simuFileName->value());
     auto tree_input_files = R3B::GetFilesFromRegex(simuTreeFileName->value());
     auto filesource = std::make_unique<R3BFileSource2>();
+    if (run_id->value() >= 0)
+    {
+        filesource->SetRunId(run_id->value());
+        R3BLOG(info, fmt::format("Filesource2: Set to run id {}", run_id->value()));
+    }
+
     filesource->AddFile(std::move(tree_input_files), true);
     filesource->AddFile(std::move(fairroot_input_files), false);
 

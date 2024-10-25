@@ -531,7 +531,7 @@ void R3BFileSource2::FillEventHeader(FairEventHeader* evtHeader)
     if (init_runID != GetRunId())
     {
         R3BLOG(
-            error,
+            warn,
             fmt::format("runID {} being set is different from the runID {} in the data file!", GetRunId(), init_runID));
     }
     SetRunId(init_runID); // NOLINT
