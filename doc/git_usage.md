@@ -171,3 +171,17 @@ If you don't need any uncommitted changes, you could reset it back to the latest
 git reset --hard HEAD
 ```
 Be aware that this will erase any uncommitted change permanently.
+
+### Method 3: Stash the change
+
+You could first put all the changes into a temporary stash with
+
+```bash
+git stash
+```
+
+After you completed all the actions, to get your changes back:
+
+```bash
+git stash pop
+```
