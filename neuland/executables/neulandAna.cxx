@@ -52,8 +52,7 @@ auto main(int argc, const char** argv) -> int
         programOptions.Create_Option<std::string>("digiFile", "set the filename of digitization output", "digi.root");
     auto logLevel = programOptions.Create_Option<std::string>("logLevel,v", "set log level of fairlog", "error");
     auto eventNum = programOptions.Create_Option<int>("eventNum,n", "set total event number", 0);
-    auto run_id =
-        programOptions.Create_Option<int>("run-id,n", "set the run ID (Only needed if reading only trees)", -1);
+    auto run_id = programOptions.Create_Option<int>("run-id", "set the run ID (Only needed if reading only trees)", -1);
     auto hitLevelPar =
         programOptions.Create_Option<std::string>("hitLevelPar", "set the name of hit level parameter if needed.", "");
 
@@ -113,6 +112,7 @@ auto main(int argc, const char** argv) -> int
     if (run_id->value() >= 0)
     {
         run->SetRunId(run_id->value());
+        R3BLOG(info, fmt::format("Set to run id {}", run_id->value()));
     }
 
     auto fairroot_input_files = R3B::GetFilesFromRegex(simuFileName->value());
