@@ -12,6 +12,10 @@
 #include "R3BNeulandHitMon.h"
 #include "R3BProgramOptions.h"
 #include "TStopwatch.h"
+#include <R3BNeulandClusterFinder.h>
+#include <R3BNeulandMultiplicityCalorimetricTrain.h>
+#include <R3BNeulandPrimaryClusterFinder.h>
+#include <R3BNeulandPrimaryInteractionFinder.h>
 #include <TObjString.h>
 #include <boost/program_options.hpp>
 
@@ -80,9 +84,12 @@ auto main(int argc, const char** argv) -> int
     // settings:
     auto tamexParameter = Digitizing::Neuland::Tamex::Params{ TamexChannel::GetDefaultRandomGen() };
     auto pileup_strategy = Digitizing::Neuland::Tamex::PeakPileUpStrategy::time_window;
-    tamexParameter.fPMTThresh = 1.;
-    tamexParameter.fTimeMin = 1.;
-
+    tamexParameter.fPMTThresh = 0.45;
+    //tamexParameter.fTimeMin = 1.;
+    tamexParameter.fTimeRes = 0.23;
+    tamexParameter.fSaturationCoefficient = 0.;
+    tamexParameter.fExperimentalDataIsCorrectedForSaturation = kTRUE;
+   
     const auto neulandEngines = std::map<std::pair<const std::string, const std::string>,
                                          std::function<std::unique_ptr<Digitizing::DigitizingEngineInterface>()>>{
         { { "neuland", "tamex" },
@@ -139,8 +146,24 @@ auto main(int argc, const char** argv) -> int
     auto digiNeuland = std::make_unique<R3BNeulandDigitizer>();
     digiNeuland->SetEngine((neulandEngines.at({ paddleName->value(), channelName->value() }))());
     run->AddTask(digiNeuland.release());
+
+
+
+
+
+
     auto hitmon = std::make_unique<R3BNeulandHitMon>();
     run->AddTask(hitmon.release());
+
+   
+    run->AddTask(std::make_unique<R3BNeulandPrimaryInteractionFinder>().release());
+    run->AddTask(std::make_unique<R3BNeulandClusterFinder>().release());
+    run->AddTask(std::make_unique<R3BNeulandPrimaryClusterFinder>().release());
+    run->AddTask(std::make_unique<R3BNeulandMultiplicityCalorimetricTrain>().release());
+
+
+
+
 
     run->Init();
     run->Run(0, eventNum->value());

@@ -17,19 +17,19 @@ void testNeulandTrain()
     TStopwatch timer;
     timer.Start();
 
-    FairLogger::GetLogger()->SetLogScreenLevel("debug");
+    //FairLogger::GetLogger()->SetLogScreenLevel("debug");
 
     FairRunAna run;
-    run.SetSource(new FairFileSource("test.digi.root"));
-    run.SetSink(new FairRootFileSink("test.train.root"));
+    run.SetSource(new FairFileSource("/lustre/land/desha/s455/simulations/digi_selection3.root"));
+    run.SetSink(new FairRootFileSink("/lustre/land/desha/s455/simulations/train_selection3.root"));
 
     auto rtdb = run.GetRuntimeDb();
     auto io = new FairParRootFileIo(true);
-    io->open("test.neul.root");
+    io->open("/lustre/land/desha/s455/simulations/test.selection3.root");
     rtdb->setOutput(io);
 
-    run.AddTask(new R3BNeulandMultiplicityBayesTrain());
-    run.AddTask(new R3BNeulandMultiplicityCalorimetricTrain());
+    //run.AddTask(new R3BNeulandMultiplicityBayesTrain());
+    run.AddTask(new R3BNeulandMultiplicityCalorimetricTrain("NeulandClusters", "NeulandPrimaryTracks"));
 
     run.Init();
     run.Run(0, 0);

@@ -35,7 +35,7 @@ R3BNeulandMultiplicityCalorimetricTrain::R3BNeulandMultiplicityCalorimetricTrain
     , fPHits(std::move(phits))
     , fPar(nullptr)
     , fUseHits(false)
-    , fEdepOpt({ 200, 25, 50, 1500 })
+    , fEdepOpt({ 300, 10, 50, 3000 })
     , fEdepOffOpt({ 5, 1, 0, 250 })
     , fNclusterOpt({ 10, 5, 5, 50 })
     , fNclusterOffOpt({ 2, 1, 0, 10 })
